@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\FormulaireController;
 use App\Http\Controllers\MessagerieController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ServicesController;
@@ -29,7 +30,12 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-    Route::get('/messagerie',[MessagerieController::class, 'index'])->name('service.filtre');
+
+    Route::get('/messagerie',[MessagerieController::class, 'index'])->name('message.index');
+    Route::post('/list', [MessagerieController::class, 'getListMessage'])->name('message.list');
+
+    Route::get('/formulaireAnnonce',[FormulaireController::class,'index'])->name('formulaire.index');
+    Route::post('/formulaireAnnonce',[FormulaireController::class,'store'])->name('formulaire.store');
 });
 
 require __DIR__.'/auth.php';

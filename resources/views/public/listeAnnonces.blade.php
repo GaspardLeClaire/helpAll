@@ -40,8 +40,8 @@
     </x-guest-layout>
     <div id="my-map"></div>
     <div id="test" hidden>{{ $servicesJson }}</div>
-    <script src="{{ asset('jquery-3.7.1.min.js') }}"></script>
+    <script src="{{ asset('js/jquery-3.7.1.min.js') }}"></script>
     <!-- Inclure MapLibre-GL avant le script -->
-    <script src="{{ asset('maplibre-gl.js') }}"></script>
+    <script src="{{ asset('js/maplibre-gl.js') }}"></script>
     <!-- Inclure votre fichier JavaScript après MapLibre-GL -->
-    <script src="{{ asset('map.js') }}"></script>
+    <script src="{{ asset('js/map.js') }}"></script>

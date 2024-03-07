@@ -45,8 +45,6 @@ class Offre extends Model
 
 	public function service()
 	{
-		return $this->belongsTo(Service::class, 'IDUTILISATEUR_1', 'IDUTILISATEUR')
-					->where('service.IDUTILISATEUR', '=', 'offre.IDUTILISATEUR_1')
-					->where('service.IDSERVICE', '=', 'offre.IDSERVICE');
+		return $this->belongsTo(Service::class, 'IDUTILISATEUR_1', 'IDUTILISATEUR');
 	}
 }
