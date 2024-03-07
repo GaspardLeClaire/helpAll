@@ -14,7 +14,7 @@ class FormulaireController extends Controller
 
     public function store(Request $request){
         if (Auth::check()) {
-            $data = $request->only(['demande', 'libelle', 'description', 'prix', 'numero', 'rue', 'codePostal', 'ville']);
+            $data = $request->only(['demande', 'libelle', 'description', 'prix','dateDebut', 'numero', 'rue', 'codePostal', 'ville']);
             $lastService = Service::orderBy('IDSERVICE', 'desc')->first();
             
             $userId = Auth::user()->IDUTILISATEUR;
@@ -31,7 +31,7 @@ class FormulaireController extends Controller
             $service->CODEPOSTAL = $data['codePostal'];
             $service->VILLE = $data['ville'];
             $service->ESTDEMANDE = $data['demande'];
-            $service->DATEPOSTER = now();
+            $service->DATEPOSTER = $data['dateDebut'];
             $service->ETAT = 0;
             $service->save();
                 
