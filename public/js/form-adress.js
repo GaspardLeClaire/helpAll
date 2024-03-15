@@ -49,7 +49,7 @@ $(document).ready(function () {
     $('#typeService').on('change',function(){
         console.log( $('#typeService').val().toUpperCase())
         if($('#typeService').val().toUpperCase() === "COVOITURAGE"){
-            $('.form-type').append(`<p>BAKIIIIIIIIIIIIIIIIIIIIIIII T MOOOOOOOOOOOOOOOOORT </p>`)
+            $('.form-type').append(`<p>Test</p>`)
         }
     })
 

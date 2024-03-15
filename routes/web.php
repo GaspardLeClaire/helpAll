@@ -36,6 +36,8 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/formulaireAnnonce',[FormulaireController::class,'index'])->name('formulaire.index');
     Route::post('/formulaireAnnonce',[FormulaireController::class,'store'])->name('formulaire.store');
+
+    Route::get('/detailAnnonce/{IDSERVICE}/{IDUTILISATEUR}',[ServicesController::class,'detail'])->name('service.detail');
 });
 
 require __DIR__.'/auth.php';

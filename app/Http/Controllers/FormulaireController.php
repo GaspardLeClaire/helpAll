@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Auth;
 class FormulaireController extends Controller
 {
     public function index(){
-        return View('private.ajoutAnnonces');
+        return View('annonce.ajoutAnnonces');
     }
 
     public function store(Request $request){

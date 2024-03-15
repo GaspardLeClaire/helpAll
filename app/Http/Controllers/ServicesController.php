@@ -14,7 +14,7 @@ class ServicesController extends Controller
     {
         $services = Service::All();
         $serviceJson = $services->toJson();
-        return View('public.listeAnnonces', ['services' => $services, 'servicesJson' => $serviceJson]);
+        return View('annonce.listeAnnonces', ['services' => $services, 'servicesJson' => $serviceJson]);
     }
 
     public function filtreDemande(Request $request)
@@ -53,36 +53,47 @@ class ServicesController extends Controller
                     break;
             }
         }
-    else{
-        if($data['demande'] === "Choose a type" && $data['typeService'] !== "Choose a type"){
-            switch ($nomType) {
-                case "COVOITURAGE":
-                    $services = DB::table('service')
-                    ->whereExists(function ($query) {
-                        $query->select(DB::raw(1))
-                              ->from('covoiturage')
-                              ->whereColumn('service.IDUTILISATEUR', 'covoiturage.IDUTILISATEUR')
-                              ->whereColumn('service.IDSERVICE', 'covoiturage.IDSERVICE');
-                    })->get();
-                    break;
-                case "ECHANGE_COMPETENCE":
-                    $services = DB::table('service')
-                    ->whereExists(function ($query) {
-                        $query->select(DB::raw(1))
-                              ->from('echange_competences')
-                              ->whereColumn('service.IDUTILISATEUR', 'echange_competences.IDUTILISATEUR')
-                              ->whereColumn('service.IDSERVICE', 'echange_competences.IDSERVICE');
-                    })
-                    ->get();
-                    break;
+        else{
+            if($data['demande'] === "Choose a type" && $data['typeService'] !== "Choose a type"){
+                switch ($nomType) {
+                    case "COVOITURAGE":
+                        $services = DB::table('service')
+                        ->whereExists(function ($query) {
+                            $query->select(DB::raw(1))
+                                ->from('covoiturage')
+                                ->whereColumn('service.IDUTILISATEUR', 'covoiturage.IDUTILISATEUR')
+                                ->whereColumn('service.IDSERVICE', 'covoiturage.IDSERVICE');
+                        })->get();
+                        break;
+                    case "ECHANGE_COMPETENCE":
+                        $services = DB::table('service')
+                        ->whereExists(function ($query) {
+                            $query->select(DB::raw(1))
+                                ->from('echange_competences')
+                                ->whereColumn('service.IDUTILISATEUR', 'echange_competences.IDUTILISATEUR')
+                                ->whereColumn('service.IDSERVICE', 'echange_competences.IDSERVICE');
+                        })
+                        ->get();
+                        break;
 
-                default:
-                    break;
+                    default:
+                        break;
+                }
             }
-        }
     }
         $serviceJson = $services->toJson();
 
-        return View('public.listeAnnonces', ['services' => $services, 'demande' => $data['demande'], 'servicesJson' => $serviceJson]);
+        return View('annonce.listeAnnonces', ['services' => $services, 'demande' => $data['demande'], 'servicesJson' => $serviceJson]);
     }
+
+    public function detail(int $IDSERVICE, int $IDUTILISATEUR){
+        $service = Service::where('IDSERVICE',$IDSERVICE)->where('IDUTILISATEUR',$IDUTILISATEUR)->first();
+        $serviceType = $service->covoiturage()->firstOrNull();
+        if($serviceType == null){
+            $serviceType = $service->echange_competences()->firstOrNull();
+        }
+
+        return View('annonce.detail',['service' => $service]);
+    }
+
 }

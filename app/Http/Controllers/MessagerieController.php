@@ -20,7 +20,7 @@ class MessagerieController extends Controller
         $offres = new Offre();
         $offres = Offre::where('IDUTILISATEUR', $id)->orwhere('IDUTILISATEUR_1', $id)->get();
 
-        return View('private.messagerie', ['offres' => $offres]);
+        return View('messages.messagerie', ['offres' => $offres]);
     }
     public function getListMessage(Request $request)
     {
