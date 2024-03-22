@@ -37,7 +37,7 @@ class EvenementSportif extends Model
 
 	public function service()
 	{
-		return $this->belongsTo(Service::class, 'IDUTILISATEUR', 'IDUTILISATEUR')
+		return $this->belongsTo(Service::class, 'IDUTILISATEUR')
 					->where('service.IDUTILISATEUR', '=', 'evenement_sportif.IDUTILISATEUR')
 					->where('service.IDSERVICE', '=', 'evenement_sportif.IDSERVICE');
 	}

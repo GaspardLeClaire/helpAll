@@ -15,6 +15,7 @@ use Illuminate\Database\Eloquent\Model;
  * 
  * @property int $IDUTILISATEUR
  * @property int $IDSERVICE
+ * @property string $TYPE
  * @property string $LIBELLE
  * @property string $DESCRIPTION
  * @property string|null $NUMERO
@@ -56,6 +57,7 @@ class Service extends Model
 	];
 
 	protected $fillable = [
+		'TYPE',
 		'LIBELLE',
 		'DESCRIPTION',
 		'NUMERO',
@@ -70,7 +72,7 @@ class Service extends Model
 
 	public function etudiant()
 	{
-		return $this->belongsTo(Etudiant::class, 'IDUTILISATEUR');
+		return $this->belongsTo(Etudiant::class, 'IDUTILISATEUR', 'IDUTILISATEUR');
 	}
 
 	public function cinema()
@@ -110,7 +112,7 @@ class Service extends Model
 
 	public function messages()
 	{
-		return $this->hasMany(Message::class, 'IDUTILISATEUR_1', 'IDUTILISATEUR');
+		return $this->hasMany(Message::class, 'IDUTILISATEUR_2', 'IDUTILISATEUR');
 	}
 
 	public function offres()

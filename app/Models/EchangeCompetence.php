@@ -36,7 +36,7 @@ class EchangeCompetence extends Model
 
 	public function service()
 	{
-		return $this->belongsTo(Service::class, 'IDUTILISATEUR', 'IDUTILISATEUR')
+		return $this->belongsTo(Service::class, 'IDUTILISATEUR')
 					->where('service.IDUTILISATEUR', '=', 'echange_competences.IDUTILISATEUR')
 					->where('service.IDSERVICE', '=', 'echange_competences.IDSERVICE');
 	}

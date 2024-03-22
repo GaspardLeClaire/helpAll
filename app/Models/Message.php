@@ -16,7 +16,8 @@ use Illuminate\Database\Eloquent\Model;
  * @property int|null $IDSERVICE
  * @property int|null $IDTICKET
  * @property int $IDUTILISATEUR
- * @property int|null $IDUTILISATEUR_1
+ * @property int $IDUTILISATEUR_1
+ * @property int|null $IDUTILISATEUR_2
  * @property int|null $IDTICKET_1
  * @property string $CONTENU
  * @property Carbon $DATEMSG
@@ -39,6 +40,7 @@ class Message extends Model
 		'IDTICKET' => 'int',
 		'IDUTILISATEUR' => 'int',
 		'IDUTILISATEUR_1' => 'int',
+		'IDUTILISATEUR_2' => 'int',
 		'IDTICKET_1' => 'int',
 		'DATEMSG' => 'datetime'
 	];
@@ -48,6 +50,7 @@ class Message extends Model
 		'IDTICKET',
 		'IDUTILISATEUR',
 		'IDUTILISATEUR_1',
+		'IDUTILISATEUR_2',
 		'IDTICKET_1',
 		'CONTENU',
 		'DATEMSG'
@@ -55,13 +58,13 @@ class Message extends Model
 
 	public function etudiant()
 	{
-		return $this->belongsTo(Etudiant::class, 'IDUTILISATEUR');
+		return $this->belongsTo(Etudiant::class, 'IDUTILISATEUR_1');
 	}
 
 	public function service()
 	{
-		return $this->belongsTo(Service::class, 'IDUTILISATEUR_1', 'IDUTILISATEUR')
-					->where('service.IDUTILISATEUR', '=', 'message.IDUTILISATEUR_1')
+		return $this->belongsTo(Service::class, 'IDUTILISATEUR_2')
+					->where('service.IDUTILISATEUR', '=', 'message.IDUTILISATEUR_2')
 					->where('service.IDSERVICE', '=', 'message.IDSERVICE');
 	}
 

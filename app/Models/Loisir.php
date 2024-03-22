@@ -40,7 +40,7 @@ class Loisir extends Model
 
 	public function service()
 	{
-		return $this->belongsTo(Service::class, 'IDUTILISATEUR', 'IDUTILISATEUR')
+		return $this->belongsTo(Service::class, 'IDUTILISATEUR')
 					->where('service.IDUTILISATEUR', '=', 'loisirs.IDUTILISATEUR')
 					->where('service.IDSERVICE', '=', 'loisirs.IDSERVICE');
 	}

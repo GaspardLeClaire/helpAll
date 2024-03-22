@@ -52,7 +52,7 @@ class Covoiturage extends Model
 
 	public function service()
 	{
-		return $this->belongsTo(Service::class, 'IDUTILISATEUR', 'IDUTILISATEUR')
+		return $this->belongsTo(Service::class, 'IDUTILISATEUR')
 					->where('service.IDUTILISATEUR', '=', 'covoiturage.IDUTILISATEUR')
 					->where('service.IDSERVICE', '=', 'covoiturage.IDSERVICE');
 	}

@@ -40,7 +40,7 @@ class Cinema extends Model
 
 	public function service()
 	{
-		return $this->belongsTo(Service::class, 'IDUTILISATEUR', 'IDUTILISATEUR')
+		return $this->belongsTo(Service::class, 'IDUTILISATEUR')
 					->where('service.IDUTILISATEUR', '=', 'cinema.IDUTILISATEUR')
 					->where('service.IDSERVICE', '=', 'cinema.IDSERVICE');
 	}

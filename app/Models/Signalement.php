@@ -60,7 +60,7 @@ class Signalement extends Model
 
 	public function service()
 	{
-		return $this->belongsTo(Service::class, 'IDUTILISATEUR', 'IDUTILISATEUR')
+		return $this->belongsTo(Service::class, 'IDUTILISATEUR')
 					->where('service.IDUTILISATEUR', '=', 'signalement.IDUTILISATEUR')
 					->where('service.IDSERVICE', '=', 'signalement.IDSERVICE');
 	}
