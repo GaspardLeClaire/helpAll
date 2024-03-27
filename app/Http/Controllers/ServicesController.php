@@ -90,9 +90,12 @@ class ServicesController extends Controller
 
     public function detail(int $IDSERVICE, int $IDUTILISATEUR){
         $service = Service::where('IDSERVICE',$IDSERVICE)->where('IDUTILISATEUR',$IDUTILISATEUR)->first();
-        $v = $service->echange_competence()->first()->COMPETENCE;
-        //dd($v);
-        return View('annonce.detail',['service' => $service]);
+        $offreExiste = false;
+        foreach($service->offres() as $offre){
+            if($offre->IDUTILISATEUR == Auth::user()->IDUTILISATEUR) { $offreExiste = true ;}
+        }
+        
+        return View('annonce.detail',['service' => $service,'offreExiste' => $offreExiste]);
     }
 
     public function offre(Request $request,int $IDSERVICE, int $IDUTILISATEUR){
