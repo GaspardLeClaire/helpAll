@@ -18,31 +18,43 @@ class MessagerieController extends Controller
 
         $id = Auth::user()->IDUTILISATEUR;
         $offres = new Offre();
-        $offres = Offre::where('IDUTILISATEUR', $id)->orwhere('IDUTILISATEUR_1', $id)->get();
-
+        $offres = Offre::where('IDUTILISATEUR', $id)->orWhere('IDUTILISATEUR_1', $id)->get();
         return View('messages.messagerie', ['offres' => $offres]);
     }
     public function getListMessage(Request $request)
     {
         try {
-            $idService = $request->input('idService');
-            $idUtilisateur = $request->input('idUtilisateur');
-            $id = Auth::user()->IDUTILISATEUR; // Utilisez Auth::id() pour récupérer directement l'ID de l'utilisateur connecté
 
-            $other = Etudiant::findOrFail($idUtilisateur); // Assurez-vous d'importer la classe Utilisateur en haut du fichier
+            // comment m'y prendre ? IDUTILISATEUR = celui qui envoit le message IDUTILISATEUR_1 = à qui IDUTILISATEUR_2 = propriétaire du service
+
+            // Si $idUtilisateur_1 = $id alors la personne auth est l'auteur de l'offre
+            // si $idUtilisateur_2 = $id alors la personne auth est l'auteur du service
+
+            $idService = $request->input('idService');
+            $idUtilisateur_1 = $request->input('idUtilisateur');
+            $idUtilisateur_2 = $request->input('idUtilisateur_1');
+            
+            $id = Auth::user()->IDUTILISATEUR;
+
+            
+
+           
+
+            $other = Etudiant::findOrFail($idUtilisateur_1); 
             $him = Etudiant::findOrFail($id);
 
 
             // Exécutez la requête en ajoutant ->get()
-            $messages = Message::where('IDUTILISATEUR', $id)
-                ->where('IDSERVICE', $idService)
-                ->where('IDUTILISATEUR_1', $idUtilisateur)
-                ->get();
+            $messages = Message::where('IDSERVICE', $idService)->where('IDUTILISATEUR_2', $idUtilisateur_2)
+                        ->orWhere('IDUTILISATEUR',$id)
+                        ->orWhere('IDUTILISATEUR',$idUtilisateur_1)
+                        ->orderBy('DATEMSG')
+                        ->get();
 
 
             // Ajoutez les informations de l'étudiant aux messages
             foreach ($messages as $message) {
-                $message->otherStudent = $other; // Vous pouvez changer "etudiant" par le nom de la relation appropriée
+                $message->otherStudent = $other; 
                 $message->him = $him;
             }
 

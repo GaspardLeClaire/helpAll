@@ -1,9 +1,9 @@
 $('.boutonConversation').on('click', function () {
     var idUtilisateur = $(this).data('utilisateur-id');
     var idService = $(this).data('service-id');
-    var id = $(this).data(`-user-id`);
+    var idUtilisateur_1 = $(this).data('utilisateur_1-id');
     var url = $('#ajax-url').data('url');
-    console.log(`${idService} et ${idUtilisateur} et ${id}`);
+    console.log(`${idService} et ${idUtilisateur} et ${idUtilisateur_1}`);
     $.ajax({
         url: url,
         type: "POST",
@@ -13,14 +13,17 @@ $('.boutonConversation').on('click', function () {
         },
         data: {
             idService: idService, // Remplacez 'valeur_idService' par la valeur réelle de idService
-            idUtilisateur: idUtilisateur // Remplacez 'valeur_idUtilisateur' par la valeur réelle de idUtilisateur
+            idUtilisateur: idUtilisateur, // Remplacez 'valeur_idUtilisateur' par la valeur réelle de idUtilisateur
+            idUtilisateur_1: idUtilisateur_1
         },
         success: function (data) {
             // Traitement de la réponse en cas de succès
+            console.log(data);
             data.forEach(message => {
                 console.log(message);
                 $('.messages').empty();
                 if (message.IDUTILISATEUR !== message.him.IDUTILISATEUR) {
+                  console.log('gauche')
                     $('.messages').append(`<div class="col-start-1 col-end-8 p-3 rounded-lg">
                 <div class="flex flex-row items-center">
                   <div class="flex items-center justify-center h-10 w-10 rounded-full bg-indigo-500 flex-shrink-0">
@@ -33,12 +36,13 @@ $('.boutonConversation').on('click', function () {
               </div>`)
                 }
                 else{
-                    $('.messages').append(`<div class="col-start-1 col-end-8 p-3 rounded-lg">
-                    <div class="flex flex-row items-center">
+                    console.log("droite")
+                    $('.messages').append(`<div class="col-start-6 col-end-13 p-3 rounded-lg">
+                    <div class="flex items-center justify-start flex-row-reverse">
                       <div class="flex items-center justify-center h-10 w-10 rounded-full bg-indigo-500 flex-shrink-0">
-                        ${message.him.NOM[0]}
+                      ${message.him.NOM[0]}
                       </div>
-                      <div class="relative ml-3 text-sm bg-white py-2 px-4 shadow rounded-xl">
+                      <div class="relative mr-3 text-sm bg-indigo-100 py-2 px-4 shadow rounded-xl">
                         <div>${message.CONTENU}</div>
                       </div>
                     </div>

@@ -4,12 +4,24 @@ namespace App\Http\Controllers;
 
 use App\Models\Service;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 
 class FormulaireController extends Controller
 {
     public function index(){
-        return View('annonce.ajoutAnnonces');
+        return View('formulaire.ajoutAnnonces');
+    }
+
+    public function indexPortail(int $IDSERVICE, int $IDUTILISATEUR){
+        $serviceAdd = Service::where('IDSERVICE',$IDSERVICE)->where('IDUTILISATEUR',$IDUTILISATEUR)->first();
+        $lastService = Service::orderBy('IDSERVICE','desc')->first();
+        if($serviceAdd == $lastService){
+            return View('formulaire.redirectionForm',['service'=>$lastService]);
+        }
+        else{
+            return redirect()->route('public.index');
+        }
     }
 
     public function store(Request $request){
@@ -32,13 +44,36 @@ class FormulaireController extends Controller
             $service->VILLE = $data['ville'];
             $service->ESTDEMANDE = $data['demande'];
             $service->DATEPOSTER = $data['dateDebut'];
-            $service->ETAT = 0;
+            $service->ETAT = 1;
             $service->save();
                 
-            return redirect()->route('public.index');
+            return redirect()->route('formulaire.portail');
         } else {
             // Gérer le cas où l'utilisateur n'est pas authentifié
             return redirect()->route('login')->with('error', 'Veuillez vous connecter pour effectuer cette action.');
         }
     }
+
+    public function indexCompetence(int $IDSERVICE, int $IDUTILISATEUR){
+        $serviceAdd = Service::where('IDSERVICE',$IDSERVICE)->where('IDUTILISATEUR',$IDUTILISATEUR)->first();
+        $lastService = Service::orderBy('IDSERVICE','desc')->first();
+        if($serviceAdd == $lastService){
+
+            return View('formulaire.formulaireEchangeCompetence',['service'=>$lastService]);
+        }
+        else{
+            return redirect()->route('public.index');
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
 }

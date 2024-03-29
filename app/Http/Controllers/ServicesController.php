@@ -91,10 +91,10 @@ class ServicesController extends Controller
     public function detail(int $IDSERVICE, int $IDUTILISATEUR){
         $service = Service::where('IDSERVICE',$IDSERVICE)->where('IDUTILISATEUR',$IDUTILISATEUR)->first();
         $offreExiste = false;
-        foreach($service->offres() as $offre){
-            if($offre->IDUTILISATEUR == Auth::user()->IDUTILISATEUR) { $offreExiste = true ;}
+        $offre = Offre::where('IDSERVICE',$IDSERVICE)->where('IDUTILISATEUR_1',$IDUTILISATEUR)->first();
+        if($offre !== null){
+            $offreExiste = true;
         }
-        
         return View('annonce.detail',['service' => $service,'offreExiste' => $offreExiste]);
     }
 
@@ -102,8 +102,8 @@ class ServicesController extends Controller
         $data = $request->only(['prix']);
         $service = Service::where('IDSERVICE',$IDSERVICE)->where('IDUTILISATEUR',$IDUTILISATEUR)->first();
         if($service->COUT !== $data['prix']){
-            $offre = Offre::where('IDSERVICE',$IDSERVICE)->where('IDUTILISATEUR',$IDUTILISATEUR);
-            if(!$offre){
+            $offre = Offre::where('IDSERVICE',$IDSERVICE)->where('IDUTILISATEUR_1',$IDUTILISATEUR)->where('IDUTILISATEUR',Auth::user()->IDUTILISATEUR)->first();
+            if($offre == null){
                 Offre::create([
                     'IDUTILISATEUR'=> Auth::user()->IDUTILISATEUR,
                     'IDUTILISATEUR_1'=>$IDUTILISATEUR,

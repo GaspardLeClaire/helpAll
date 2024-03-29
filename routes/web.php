@@ -37,8 +37,18 @@ Route::middleware('auth')->group(function () {
     Route::get('/formulaireAnnonce',[FormulaireController::class,'index'])->name('formulaire.index');
     Route::post('/formulaireAnnonce',[FormulaireController::class,'store'])->name('formulaire.store');
 
-    Route::get('/detailAnnonce/{IDSERVICE}/{IDUTILISATEUR}',[ServicesController::class,'detail'])->name('service.detail');
-    Route::post('/detailAnnonce/{IDSERVICE}/{IDUTILISATEUR}',[ServicesController::class,'offre'])->name('service.offre');
+    Route::get('/portailFormulaire/{IDSERVICE}/{IDUTILISATEUR}',[FormulaireController::class,'indexPortail'])->name('formulaire.portail');
+
+    Route::get('/covoiturage/{IDSERVICE}/{IDUTILISATEUR}',[FormulaireController::class,'indexCovoiturage'])->name('formulaire.index.covoiturage');
+    Route::post('/covoiturage/{IDSERVICE}/{IDUTILISATEUR}',[FormulaireController::class,'storeCovoiturage'])->name('formulaire.store.covoiturage');
+
+    Route::get('/competence/{IDSERVICE}/{IDUTILISATEUR}',[FormulaireController::class,'indexCompetence'])->name('formulaire.index.competence');
+    Route::post('/competence/{IDSERVICE}/{IDUTILISATEUR}',[FormulaireController::class,'storeCompetence'])->name('formulaire.store.competence');
+
+
+
+    Route::get('/detail/{IDSERVICE}/{IDUTILISATEUR}',[ServicesController::class,'detail'])->name('service.detail');
+    Route::post('/detail/{IDSERVICE}/{IDUTILISATEUR}',[ServicesController::class,'offre'])->name('service.offre');
 });
 
 require __DIR__.'/auth.php';

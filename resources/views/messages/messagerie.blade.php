@@ -21,15 +21,15 @@
           <div id="ajax-url" data-url="{{ route('message.list') }}">
             @foreach($offres as $offre)
             <div class="flex flex-col space-y-1 mt-4 -mx-2 h-48 overflow-y-auto">
-              <button class="flex flex-row items-center hover:bg-gray-100 rounded-xl p-2 boutonConversation" data-utilisateur-id="{{$offre->service->IDUTILISATEUR}}" data-service-id="{{$offre->service->IDSERVICE}}">
+              <button class="flex flex-row items-center hover:bg-gray-100 rounded-xl p-2 boutonConversation" data-utilisateur_1-id="{{$offre->IDUTILISATEUR_1}}" data-service-id="{{$offre->IDSERVICE}}" data-utilisateur-id="{{$offre->IDUTILISATEUR}}">
                 <div class="flex items-center justify-center h-8 w-8 bg-gray-200 rounded-full">
-                  {{ $offre->service->etudiant->NOM[0] }}
+                  {{ $offre->etudiant->NOM[0] }}
                 </div>
-                <div class="ml-2 text-sm font-semibold utilisateur">{{$offre->service->etudiant->NOM}} {{$offre->service->etudiant->PRENOM}} </div>
-                <div class="ml-2 text-sm font-semibold service">{{$offre->service->LIBELLE}} </div>
-                <div class="flex items-center justify-center ml-auto text-xs text-white bg-red-500 h-4 w-4 rounded leading-none">
+                <div class="ml-2 text-sm font-semibold utilisateur">{{$offre->etudiant->NOM}} {{$offre->etudiant->PRENOM}} </div>
+                <div class="ml-2 text-sm font-semibold service">$offre->service->LIBELLE </div>
+                <!-- <div class="flex items-center justify-center ml-auto text-xs text-white bg-red-500 h-4 w-4 rounded leading-none">
                   2
-                </div>
+                </div> -->
               </button>
             </div>
             @endforeach
@@ -46,26 +46,6 @@
           <div class="flex flex-col h-full overflow-x-auto mb-4">
             <div class="flex flex-col h-full">
               <div class="grid grid-cols-12 gap-y-2 messages">
-                <div class="col-start-1 col-end-8 p-3 rounded-lg">
-                  <div class="flex flex-row items-center">
-                    <div class="flex items-center justify-center h-10 w-10 rounded-full bg-indigo-500 flex-shrink-0">
-                      A
-                    </div>
-                    <div class="relative ml-3 text-sm bg-white py-2 px-4 shadow rounded-xl">
-                      <div>Hey How are you today?</div>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-start-6 col-end-13 p-3 rounded-lg">
-                  <div class="flex items-center justify-start flex-row-reverse">
-                    <div class="flex items-center justify-center h-10 w-10 rounded-full bg-indigo-500 flex-shrink-0">
-                      A
-                    </div>
-                    <div class="relative mr-3 text-sm bg-indigo-100 py-2 px-4 shadow rounded-xl">
-                      <div>I'm ok what about you?</div>
-                    </div>
-                  </div>
-                </div>
               </div>
             </div>
           </div>

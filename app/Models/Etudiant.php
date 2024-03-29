@@ -6,12 +6,10 @@
 
 namespace App\Models;
 
-use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Notifications\Notifiable;
-use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
 
 /**
  * Class Etudiant
@@ -24,7 +22,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
  * @property Carbon $DATENAISS
  * @property string $EMAIL
  * @property string $PASSWORD
- * @property string|null $JETON_VALIDATION
+ * @property int $CREDITS
  * @property int $ETAT_COMPTE
  * 
  * @property Classe $classe
@@ -38,8 +36,8 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
  */
 class Etudiant extends Authenticatable
 {
-
 	use HasFactory, Notifiable;
+
 	protected $table = 'etudiant';
 	protected $primaryKey = 'IDUTILISATEUR';
 	public $timestamps = false;
@@ -48,6 +46,7 @@ class Etudiant extends Authenticatable
 		'IDCLASSE' => 'int',
 		'EST_MODERATEUR' => 'bool',
 		'DATENAISS' => 'datetime',
+		'CREDITS' => 'int',
 		'ETAT_COMPTE' => 'int'
 	];
 
@@ -59,9 +58,14 @@ class Etudiant extends Authenticatable
 		'DATENAISS',
 		'EMAIL',
 		'PASSWORD',
-		'JETON_VALIDATION',
+		'CREDITS',
 		'ETAT_COMPTE'
 	];
+
+	protected $hidden = [
+        'PASSWORD',
+        'remember_token',
+    ];
 
 	public function classe()
 	{
@@ -75,7 +79,7 @@ class Etudiant extends Authenticatable
 
 	public function messages()
 	{
-		return $this->hasMany(Message::class, 'IDUTILISATEUR');
+		return $this->hasMany(Message::class, 'IDUTILISATEUR_1');
 	}
 
 	public function offres()
@@ -93,9 +97,12 @@ class Etudiant extends Authenticatable
 		return $this->hasMany(Ticket::class, 'IDUTILISATEUR');
 	}
 
-	public function getAuthPassword()
+	/**
+     * Retourne le mot de passe de l'utilisateur
+     */
+    public function getAuthPassword()
     {
-        return $this->PASSWORD;
+        return $this->mot_de_passe;
     }
 
     /**
@@ -103,7 +110,7 @@ class Etudiant extends Authenticatable
      */
     public function getAuthIdentifier()
     {
-        return $this->EMAIL;
+        return $this->email;
     }
 
     /**
@@ -111,7 +118,6 @@ class Etudiant extends Authenticatable
      */
     public function getAuthIdentifierName()
     {
-        return 'EMAIL';
+        return 'email';
     }
-
 }

@@ -35,10 +35,10 @@ class Offre extends Model
 	];
 
 	protected $fillable = [
-		'PRIX',
 		'IDUTILISATEUR',
 		'IDUTILISATEUR_1',
-		'IDSERVICE'
+		'IDSERVICE',
+		'PRIX'
 	];
 
 	public function etudiant()
@@ -48,8 +48,6 @@ class Offre extends Model
 
 	public function service()
 	{
-		return $this->belongsTo(Service::class, 'IDUTILISATEUR_1')
-					->where('service.IDUTILISATEUR', '=', 'offre.IDUTILISATEUR_1')
-					->where('service.IDSERVICE', '=', 'offre.IDSERVICE');
+		return $this->belongsTo(Service::class, 'IDUTILISATEUR_1','IDUTILISATEUR')->where('service.IDSERVICE','=','offre.IDSERVICE');
 	}
 }
