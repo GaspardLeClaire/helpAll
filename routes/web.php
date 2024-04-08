@@ -32,7 +32,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     Route::get('/messagerie',[MessagerieController::class, 'index'])->name('message.index');
-    Route::post('/list', [MessagerieController::class, 'getListMessage'])->name('message.list');
+    Route::post('/message/{IDUTILISATEUR_2}/{IDSERVICE}/{IDUTILISATEUR_1}', [MessagerieController::class, 'store'])->name('message.store');
 
     Route::get('/formulaireAnnonce',[FormulaireController::class,'index'])->name('formulaire.index');
     Route::post('/formulaireAnnonce',[FormulaireController::class,'store'])->name('formulaire.store');

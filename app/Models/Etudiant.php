@@ -102,7 +102,7 @@ class Etudiant extends Authenticatable
      */
     public function getAuthPassword()
     {
-        return $this->mot_de_passe;
+        return $this->PASSWORD;
     }
 
     /**
@@ -110,7 +110,7 @@ class Etudiant extends Authenticatable
      */
     public function getAuthIdentifier()
     {
-        return $this->email;
+        return $this->EMAIL;
     }
 
     /**

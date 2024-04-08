@@ -18,10 +18,10 @@
             <span class="font-bold">Active Conversations</span>
             <span class="flex items-center justify-center bg-gray-300 h-4 w-4 rounded-full">{{ $offres->count(); }}</span>
           </div>
-          <div id="ajax-url" data-url="{{ route('message.list') }}">
+          <div>
             @foreach($offres as $offre)
-            <div class="flex flex-col space-y-1 mt-4 -mx-2 h-48 overflow-y-auto">
-              <button class="flex flex-row items-center hover:bg-gray-100 rounded-xl p-2 boutonConversation" data-utilisateur_1-id="{{$offre->IDUTILISATEUR_1}}" data-service-id="{{$offre->IDSERVICE}}" data-utilisateur-id="{{$offre->IDUTILISATEUR}}">
+            <div class="flex flex-col space-y-1 mt-4 -mx-2 h-48 overflow-y-auto" id="ajax-url" data-url="http://192.168.4.216:8000/api/messages?id_utilisateur={{$offre->IDUTILISATEUR}}&id_service={{$offre->IDSERVICE}}">
+              <button class="flex flex-row items-center hover:bg-gray-100 rounded-xl p-2 boutonConversation" data-utilisateur_1-id="{{$offre->IDUTILISATEUR_1}}" data-service-id="{{$offre->IDSERVICE}}" data-utilisateur-id="{{$offre->IDUTILISATEUR}}" data-auth-id="{{ Auth::user()->IDUTILISATEUR }}">
                 <div class="flex items-center justify-center h-8 w-8 bg-gray-200 rounded-full">
                   {{ $offre->etudiant->NOM[0] }}
                 </div>
@@ -46,7 +46,12 @@
           <div class="flex flex-col h-full overflow-x-auto mb-4">
             <div class="flex flex-col h-full">
               <div class="grid grid-cols-12 gap-y-2 messages">
+
               </div>
+
+            </div>
+            <div id="choose-offre">
+
             </div>
           </div>
           <div class="flex flex-row items-center h-16 rounded-xl bg-white w-full px-4">
@@ -59,16 +64,19 @@
             </div>
             <div class="flex-grow ml-4">
               <div class="relative w-full">
-                <input type="text" class="flex w-full border rounded-xl focus:outline-none focus:border-indigo-300 pl-4 h-10" />
-                <button class="absolute flex items-center justify-center h-full w-12 right-0 top-0 text-gray-400 hover:text-gray-600">
-                  <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                  </svg>
-                </button>
+                <form action="{{ route('message.store', [0,0,0]) }}" method="POST" id="form-new-message">
+                  @CSRF
+                  <input type="text" class="flex w-full border rounded-xl focus:outline-none focus:border-indigo-300 pl-4 h-10" name="CONTENU" />
+                  <button type="submit" class="absolute flex items-center justify-center h-full w-12 right-0 top-0 text-gray-400 hover:text-gray-600">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                  </button>
+
               </div>
             </div>
             <div class="ml-4">
-              <button class="flex items-center justify-center bg-indigo-500 hover:bg-indigo-600 rounded-xl text-white px-4 py-1 flex-shrink-0">
+              <button type="submit" class="flex items-center justify-center bg-indigo-500 hover:bg-indigo-600 rounded-xl text-white px-4 py-1 flex-shrink-0">
                 <span>Send</span>
                 <span class="ml-2">
                   <svg class="w-4 h-4 transform rotate-45 -mt-px" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -77,6 +85,7 @@
                 </span>
               </button>
             </div>
+            </form>
           </div>
         </div>
       </div>
