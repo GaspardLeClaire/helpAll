@@ -1,7 +1,7 @@
 $('.boutonConversation').on('click', function () {
+  $('.messages').empty();
 
-
-
+  $('#choose-offre').empty();
 
   var idUtilisateur = $(this).data('utilisateur-id');
   var idService = $(this).data('service-id');
@@ -10,25 +10,6 @@ $('.boutonConversation').on('click', function () {
   var url = $('#ajax-url').data('url');
   console.log(url);
   console.log(`${idService} et ${idUtilisateur} et ${idUtilisateur_1} et ${authUtilisateur}`);
-
-  var divChooseOffre = document.getElementById("choose-offre");
-  if (idUtilisateur_1 == authUtilisateur) {
-    divChooseOffre.append(`              <button type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center me-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-    <svg class="w-3.5 h-3.5 me-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 18 21">
-      <path d="M15 12a1 1 0 0 0 .962-.726l2-7A1 1 0 0 0 17 3H3.77L3.175.745A1 1 0 0 0 2.208 0H1a1 1 0 0 0 0 2h.438l.6 2.255v.019l2 7 .746 2.986A3 3 0 1 0 9 17a2.966 2.966 0 0 0-.184-1h2.368c-.118.32-.18.659-.184 1a3 3 0 1 0 3-3H6.78l-.5-2H15Z" />
-    </svg>
-    Accepter L'offre
-  </button>
-  <button type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-    Refuser l'offre
-    <svg class="rtl:rotate-180 w-3.5 h-3.5 ms-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
-      <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9" />
-    </svg>
-  </button>`)
-  }
-
-
-
 
   $.ajax({
     url: url,
@@ -45,7 +26,7 @@ $('.boutonConversation').on('click', function () {
     success: function (data) {
       // Traitement de la réponse en cas de succès
       console.log(data);
-      $('.messages').empty();
+
       data.forEach(message => {
         console.log(message);
         if (message.IDUTILISATEUR !== authUtilisateur) {
@@ -60,11 +41,6 @@ $('.boutonConversation').on('click', function () {
                   </div>
                 </div>
               </div>`)
-          // modifié l'action du formulaire 
-          let formulaire = document.getElementById('form-new-message');
-          if (formulaire != null) {
-            formulaire.action = `/message/${idUtilisateur_1}/${idService}/${authUtilisateur}`
-          }
         }
         else {
           console.log("droite")
@@ -79,11 +55,28 @@ $('.boutonConversation').on('click', function () {
                     </div>
                   </div>`)
         }
-        let formulaire = document.getElementById('form-new-message');
-        if (formulaire != null) {
+      });
+
+      let formulaire = document.getElementById('form-new-message');
+      if (formulaire != null) {
+        if (authUtilisateur === idUtilisateur_1) {
+          formulaire.action = `/message/${idUtilisateur_1}/${idService}/${idUtilisateur}`
+        }
+        else {
           formulaire.action = `/message/${idUtilisateur_1}/${idService}/${idUtilisateur_1}`
         }
-      });
+
+      }
+      
+      $('#choose-offre').append(`<button type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center me-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+      Accepter l'Offre
+      </button>
+      <button type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center me-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+      Refuser l'Offre
+      </button>`)
+      console.log($('choose-offre'));
+
+
 
     },
     error: function (xhr, status, error) {

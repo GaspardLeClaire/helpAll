@@ -20,7 +20,7 @@
           </div>
           <div>
             @foreach($offres as $offre)
-            <div class="flex flex-col space-y-1 mt-4 -mx-2 h-48 overflow-y-auto" id="ajax-url" data-url="http://192.168.4.216:8000/api/messages?id_utilisateur={{$offre->IDUTILISATEUR}}&id_service={{$offre->IDSERVICE}}">
+            <div class="flex flex-col space-y-1 mt-4 -mx-2 h-48 overflow-y-auto" id="ajax-url" data-url="http://192.168.5.38:8000/api/messages?id_utilisateur={{$offre->IDUTILISATEUR}}&id_service={{$offre->IDSERVICE}}">
               <button class="flex flex-row items-center hover:bg-gray-100 rounded-xl p-2 boutonConversation" data-utilisateur_1-id="{{$offre->IDUTILISATEUR_1}}" data-service-id="{{$offre->IDSERVICE}}" data-utilisateur-id="{{$offre->IDUTILISATEUR}}" data-auth-id="{{ Auth::user()->IDUTILISATEUR }}">
                 <div class="flex items-center justify-center h-8 w-8 bg-gray-200 rounded-full">
                   {{ $offre->etudiant->NOM[0] }}
@@ -51,8 +51,8 @@
 
             </div>
             <div id="choose-offre">
-
             </div>
+            
           </div>
           <div class="flex flex-row items-center h-16 rounded-xl bg-white w-full px-4">
             <div>

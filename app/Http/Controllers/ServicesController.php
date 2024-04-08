@@ -14,7 +14,7 @@ class ServicesController extends Controller
 {
     public function index()
     {
-        $services = Service::where('ETAT',1)->get();
+        $services = Service::where('ETAT', 1)->get();
         $serviceJson = $services->toJson();
         return View('annonce.listeAnnonces', ['services' => $services, 'servicesJson' => $serviceJson]);
     }
@@ -22,99 +22,56 @@ class ServicesController extends Controller
     public function filtreDemande(Request $request)
     {
         $data = $request->only(['demande', 'typeService']);
-        $services = Service::where('ETAT',1)->get();
-        if ($data['demande'] !== "Choose a type") {
+        $services = Service::where('ETAT', 1)->get();
+        if ($data['demande'] !== "") {
             $services = Service::where('estDemande', $data['demande'])->get();
         }
         $nomType =  strtoupper($data['typeService']);
-        if ($data['typeService'] !== "Choose a type" && $data['demande'] !== "Choose a type") {
-            switch ($nomType) {
-                case "COVOITURAGE":
-                    $services = DB::table('service')
-                    ->where('estDemande', $data['demande'])
-                    ->whereExists(function ($query) {
-                        $query->select(DB::raw(1))
-                              ->from('covoiturage')
-                              ->whereColumn('service.IDUTILISATEUR', 'covoiturage.IDUTILISATEUR')
-                              ->whereColumn('service.IDSERVICE', 'covoiturage.IDSERVICE');
-                    })->get();
-                    break;
-                case "ECHANGE_COMPETENCE":
-                    $services = DB::table('service')
-                    ->where('estDemande', $data['demande'])
-                    ->whereExists(function ($query) {
-                        $query->select(DB::raw(1))
-                              ->from('echange_competences')
-                              ->whereColumn('service.IDUTILISATEUR', 'echange_competences.IDUTILISATEUR')
-                              ->whereColumn('service.IDSERVICE', 'echange_competences.IDSERVICE');
-                    })
-                    ->get();
-                    break;
 
-                default:
-                    break;
+        if ($data['typeService'] !== "Tous les types sont sélectionnés" && $data['demande'] !== "Les deux sont sélectionnés") {
+            $services = Service::where('TYPE', $nomType)->where('estDemande', $data['demande'])->get();
+        } else {
+            if ($data['demande'] === "Les deux sont sélectionnés" && $data['typeService'] !== "Tous les types sont sélectionnés") {
+                if($nomType == "ECHANGES_COMPETENCES"){
+                    $services = Service::where('TYPE',$nomType)->get();
+                }
+                else{
+                    $services = Service::where('TYPE', $nomType)->get();
+                }
+                
             }
         }
-        else{
-            if($data['demande'] === "Choose a type" && $data['typeService'] !== "Choose a type"){
-                switch ($nomType) {
-                    case "COVOITURAGE":
-                        $services = DB::table('service')
-                        ->whereExists(function ($query) {
-                            $query->select(DB::raw(1))
-                                ->from('covoiturage')
-                                ->whereColumn('service.IDUTILISATEUR', 'covoiturage.IDUTILISATEUR')
-                                ->whereColumn('service.IDSERVICE', 'covoiturage.IDSERVICE');
-                        })->get();
-                        break;
-                    case "ECHANGE_COMPETENCE":
-                        $services = DB::table('service')
-                        ->whereExists(function ($query) {
-                            $query->select(DB::raw(1))
-                                ->from('echange_competences')
-                                ->whereColumn('service.IDUTILISATEUR', 'echange_competences.IDUTILISATEUR')
-                                ->whereColumn('service.IDSERVICE', 'echange_competences.IDSERVICE');
-                        })
-                        ->get();
-                        break;
-
-                    default:
-                        break;
-                }
-            }
-    }
         $serviceJson = $services->toJson();
 
         return View('annonce.listeAnnonces', ['services' => $services, 'demande' => $data['demande'], 'servicesJson' => $serviceJson]);
     }
 
-    public function detail(int $IDSERVICE, int $IDUTILISATEUR){
-        $service = Service::where('IDSERVICE',$IDSERVICE)->where('IDUTILISATEUR',$IDUTILISATEUR)->first();
+    public function detail(int $IDSERVICE, int $IDUTILISATEUR)
+    {
+        $service = Service::where('IDSERVICE', $IDSERVICE)->where('IDUTILISATEUR', $IDUTILISATEUR)->first();
         $offreExiste = false;
-        $offre = Offre::where('IDSERVICE',$IDSERVICE)->where('IDUTILISATEUR_1',$IDUTILISATEUR)->first();
-        if($offre !== null){
+        $offre = Offre::where('IDSERVICE', $IDSERVICE)->where('IDUTILISATEUR_1', $IDUTILISATEUR)->first();
+        if ($offre !== null) {
             $offreExiste = true;
         }
-        return View('annonce.detail',['service' => $service,'offreExiste' => $offreExiste]);
+        return View('annonce.detail', ['service' => $service, 'offreExiste' => $offreExiste]);
     }
 
-    public function offre(Request $request,int $IDSERVICE, int $IDUTILISATEUR){
+    public function offre(Request $request, int $IDSERVICE, int $IDUTILISATEUR)
+    {
         $data = $request->only(['prix']);
-        $service = Service::where('IDSERVICE',$IDSERVICE)->where('IDUTILISATEUR',$IDUTILISATEUR)->first();
-        if($service->COUT !== $data['prix']){
-            $offre = Offre::where('IDSERVICE',$IDSERVICE)->where('IDUTILISATEUR_1',$IDUTILISATEUR)->where('IDUTILISATEUR',Auth::user()->IDUTILISATEUR)->first();
-            if($offre == null){
+        $service = Service::where('IDSERVICE', $IDSERVICE)->where('IDUTILISATEUR', $IDUTILISATEUR)->first();
+        if ($service->COUT !== $data['prix']) {
+            $offre = Offre::where('IDSERVICE', $IDSERVICE)->where('IDUTILISATEUR_1', $IDUTILISATEUR)->where('IDUTILISATEUR', Auth::user()->IDUTILISATEUR)->first();
+            if ($offre == null) {
                 Offre::create([
-                    'IDUTILISATEUR'=> Auth::user()->IDUTILISATEUR,
-                    'IDUTILISATEUR_1'=>$IDUTILISATEUR,
-                    'IDSERVICE'=> $IDSERVICE,
-                    'PRIX'=> $data['prix']
+                    'IDUTILISATEUR' => Auth::user()->IDUTILISATEUR,
+                    'IDUTILISATEUR_1' => $IDUTILISATEUR,
+                    'IDSERVICE' => $IDSERVICE,
+                    'PRIX' => $data['prix']
                 ]);
             }
-           
-            
         }
         return redirect()->back();
     }
-
 }

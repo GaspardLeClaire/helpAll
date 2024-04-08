@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ProfileUpdateRequest;
+use App\Models\Etudiant;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -56,5 +57,25 @@ class ProfileController extends Controller
         $request->session()->regenerateToken();
 
         return Redirect::to('/');
+    }
+
+    public function credit25(){
+        $etudiant = Etudiant::find(Auth::user()->IDUTILISATEUR);
+        $etudiant->CREDITS = Auth::user()->CREDITS + 25;
+        $etudiant->update();
+        return view('dashboard');
+    }
+
+    public function credit50(){
+        $etudiant = Etudiant::find(Auth::user()->IDUTILISATEUR);
+        $etudiant->CREDITS = Auth::user()->CREDITS + 50;
+        $etudiant->update();
+        return view('dashboard');
+    }
+    public function credit75(){
+        $etudiant = Etudiant::find(Auth::user()->IDUTILISATEUR);
+        $etudiant->CREDITS = Auth::user()->CREDITS + 75;
+        $etudiant->update();
+        return view('dashboard');
     }
 }

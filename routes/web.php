@@ -30,6 +30,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::get('/profile/25',[ProfileController::class, 'credit25'])->name('profile.credit.25');
+    Route::get('/profile/50',[ProfileController::class, 'credit50'])->name('profile.credit.50');
+    Route::get('/profile/75',[ProfileController::class, 'credit75'])->name('profile.credit.75');
 
     Route::get('/messagerie',[MessagerieController::class, 'index'])->name('message.index');
     Route::post('/message/{IDUTILISATEUR_2}/{IDSERVICE}/{IDUTILISATEUR_1}', [MessagerieController::class, 'store'])->name('message.store');
@@ -44,7 +47,6 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/competence/{IDSERVICE}/{IDUTILISATEUR}',[FormulaireController::class,'indexCompetence'])->name('formulaire.index.competence');
     Route::post('/competence/{IDSERVICE}/{IDUTILISATEUR}',[FormulaireController::class,'storeCompetence'])->name('formulaire.store.competence');
-
 
 
     Route::get('/detail/{IDSERVICE}/{IDUTILISATEUR}',[ServicesController::class,'detail'])->name('service.detail');
