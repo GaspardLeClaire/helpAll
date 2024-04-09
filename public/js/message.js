@@ -7,7 +7,7 @@ $('.boutonConversation').on('click', function () {
   var idService = $(this).data('service-id');
   var idUtilisateur_1 = $(this).data('utilisateur_1-id');
   var authUtilisateur = $(this).data('auth-id');
-  var url = $('#ajax-url').data('url');
+  var url = $(this).data('url');
   console.log(url);
   console.log(`${idService} et ${idUtilisateur} et ${idUtilisateur_1} et ${authUtilisateur}`);
 
@@ -67,14 +67,14 @@ $('.boutonConversation').on('click', function () {
         }
 
       }
-      
-      $('#choose-offre').append(`<button type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center me-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+
+      /*$('#choose-offre').append(`<button type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center me-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
       Accepter l'Offre
       </button>
       <button type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center me-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
       Refuser l'Offre
       </button>`)
-      console.log($('choose-offre'));
+      console.log($('choose-offre'));*/
 
 
 

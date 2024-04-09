@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use DateTime;
 use App\Models\Offre;
+use App\Models\Message;
 use App\Models\Service;
 use App\Models\Covoiturage;
 use Illuminate\Http\Request;
@@ -50,9 +52,14 @@ class ServicesController extends Controller
     {
         $service = Service::where('IDSERVICE', $IDSERVICE)->where('IDUTILISATEUR', $IDUTILISATEUR)->first();
         $offreExiste = false;
-        $offre = Offre::where('IDSERVICE', $IDSERVICE)->where('IDUTILISATEUR_1', $IDUTILISATEUR)->first();
+        $offre = Offre::where('IDSERVICE', $IDSERVICE)->where('IDUTILISATEUR_1', $IDUTILISATEUR)->where('IDUTILISATEUR',Auth::user()->IDUTILISATEUR)->first();
         if ($offre !== null) {
             $offreExiste = true;
+        }
+        else{
+            if($IDUTILISATEUR == Auth::user()->IDUTILISATEUR){
+                $offreExiste = true;
+            }
         }
         return View('annonce.detail', ['service' => $service, 'offreExiste' => $offreExiste]);
     }
@@ -63,12 +70,21 @@ class ServicesController extends Controller
         $service = Service::where('IDSERVICE', $IDSERVICE)->where('IDUTILISATEUR', $IDUTILISATEUR)->first();
         if ($service->COUT !== $data['prix']) {
             $offre = Offre::where('IDSERVICE', $IDSERVICE)->where('IDUTILISATEUR_1', $IDUTILISATEUR)->where('IDUTILISATEUR', Auth::user()->IDUTILISATEUR)->first();
+            $contenu = "Bonjour, je souhaiterai faire une offre à ".$data['prix']." crédits (ce message a été envoyé automatiquement) ";
             if ($offre == null) {
                 Offre::create([
                     'IDUTILISATEUR' => Auth::user()->IDUTILISATEUR,
                     'IDUTILISATEUR_1' => $IDUTILISATEUR,
                     'IDSERVICE' => $IDSERVICE,
                     'PRIX' => $data['prix']
+                ]);
+                Message::Create([
+                    'IDUTILISATEUR' => Auth::user()->IDUTILISATEUR,
+                    'IDUTILISATEUR_2' => $IDUTILISATEUR,
+                    'IDSERVICE' => $IDSERVICE,
+                    'IDUTILISATEUR_1'=> $IDUTILISATEUR,
+                    'CONTENU' => $contenu,
+                    'DATEMSG'=> new DateTime() 
                 ]);
             }
         }
