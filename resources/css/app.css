@@ -1,11 +1,18 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-  
-  #my-map {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    width: 100%;
-  }
-  
+
+#my-map {
+  position: absolute;
+  top: 60px;
+  /* Ajustez cette valeur en fonction de la hauteur de votre barre de navigation */
+  bottom: 0;
+  width: 100%;
+  height: calc(100% - 60px);
+  /* Hauteur de la fenêtre moins la hauteur de la barre de navigation */
+}
+
+#default-sidebar {
+  position: absolute;
+  top: 60px;
+}

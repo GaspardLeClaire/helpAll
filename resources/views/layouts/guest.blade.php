@@ -14,13 +14,13 @@
 
     <!-- CSS -->
     <link href="https://cdn.maptiler.com/maplibre-gl-js/v2.4.0/maplibre-gl.css" rel="stylesheet" />
-    
+
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
 <body class="font-sans text-gray-900 antialiased">
-    
+    @include('layouts.navigation')
     {{ $slot }}
 
 </body>
