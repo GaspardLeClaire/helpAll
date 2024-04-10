@@ -1,6 +1,6 @@
 <x-app-layout>
   <div class="flex h-screen antialiased text-gray-800">
-    <div class="flex flex-row h-full w-full overflow-x-hidden">
+    <div class="flex flex-row h-[calc(100%-64px)] w-full overflow-x-hidden">
       <div class="flex flex-col py-8 pl-6 pr-2 w-64 bg-white flex-shrink-0">
         <div class="flex flex-row items-center justify-center h-12 w-full">
           <div class="flex items-center justify-center rounded-2xl text-indigo-700 bg-indigo-100 h-10 w-10">
@@ -20,13 +20,13 @@
           </div>
           <div>
             @foreach($offres as $offre)
-            <div class="flex flex-col space-y-1 mt-4 -mx-2 h-48 overflow-y-auto">
-              <button class="flex flex-row items-center hover:bg-gray-100 rounded-xl p-2 boutonConversation" data-utilisateur_1-id="{{$offre->IDUTILISATEUR_1}}" data-service-id="{{$offre->IDSERVICE}}" data-utilisateur-id="{{$offre->IDUTILISATEUR}}" data-auth-id="{{ Auth::user()->IDUTILISATEUR }}" data-url="http://192.168.1.63:8000/api/messages?id_utilisateur={{$offre->IDUTILISATEUR}}&id_service={{$offre->IDSERVICE}}">
+            <div class="flex flex-col space-y-1 mt-4 -mx-2 overflow-y-auto">
+              <button class="flex flex-row items-center hover:bg-gray-100 rounded-xl p-2 boutonConversation" data-utilisateur_1-id="{{$offre->IDUTILISATEUR_1}}" data-service-id="{{$offre->IDSERVICE}}" data-utilisateur-id="{{$offre->IDUTILISATEUR}}" data-auth-id="{{ Auth::user()->IDUTILISATEUR }}" data-url="http://192.168.113.21/api/messages?id_utilisateur={{$offre->IDUTILISATEUR}}&id_service={{$offre->IDSERVICE}}">
                 <div class="flex items-center justify-center h-8 w-8 bg-gray-200 rounded-full">
                   {{ $offre->etudiant->NOM[0] }}
                 </div>
                 <div class="ml-2 text-sm font-semibold utilisateur">{{$offre->etudiant->NOM}} {{$offre->etudiant->PRENOM}} </div>
-                <div class="ml-2 text-sm font-semibold service">$offre->service->LIBELLE </div>
+                <div class="ml-2 text-sm font-semibold service">id : {{$offre->IDSERVICE}} </div>
                 <!-- <div class="flex items-center justify-center ml-auto text-xs text-white bg-red-500 h-4 w-4 rounded leading-none">
                   2
                 </div> -->
@@ -41,7 +41,7 @@
 
       <!-- MESSAGE -->
 
-      <div class="flex flex-col flex-auto h-full p-6">
+      <div class="flex flex-col flex-auto h-11/12 p-6">
         <div class="flex flex-col flex-auto flex-shrink-0 rounded-2xl bg-gray-100 h-full p-4">
           <div class="flex flex-col h-full overflow-x-auto mb-4">
             <div class="flex flex-col h-full">
@@ -50,11 +50,8 @@
               </div>
 
             </div>
-            <div id="choose-offre">
-            </div>
-            
           </div>
-          <div class="flex flex-row items-center h-16 rounded-xl bg-white w-full px-4">
+          <div class="flex flex-row items-center h-15 rounded-xl bg-white w-full px-4">
             <div>
               <button class="flex items-center justify-center text-gray-400 hover:text-gray-600">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">

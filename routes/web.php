@@ -26,9 +26,13 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    Route::get('/profile/25',[ProfileController::class, 'credit25'])->name('profile.credit.25');
-    Route::get('/profile/50',[ProfileController::class, 'credit50'])->name('profile.credit.50');
-    Route::get('/profile/75',[ProfileController::class, 'credit75'])->name('profile.credit.75');
+    Route::middleware('throttle:3,3')->group(function(){
+        Route::get('/profile/25',[ProfileController::class, 'credit25'])->name('profile.credit.25');
+        Route::get('/profile/50',[ProfileController::class, 'credit50'])->name('profile.credit.50');
+        Route::get('/profile/75',[ProfileController::class, 'credit75'])->name('profile.credit.75');
+    });
+
+
 
     Route::get('/dashboard',[ProfileController::class, 'dashboard'])->middleware(['verified'])->name('dashboard');
 
@@ -49,6 +53,9 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/detail/{IDSERVICE}/{IDUTILISATEUR}',[ServicesController::class,'detail'])->name('service.detail');
     Route::post('/detail/{IDSERVICE}/{IDUTILISATEUR}',[ServicesController::class,'offre'])->name('service.offre');
+
+    Route::get('/delete/{IDSERVICE}/{IDUTILISATEUR}',[ServicesController::class,'suppression'])->name('service.delete');
+
 });
 
 require __DIR__.'/auth.php';

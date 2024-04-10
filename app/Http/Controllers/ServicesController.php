@@ -16,36 +16,51 @@ class ServicesController extends Controller
 {
     public function index()
     {
-        $services = Service::where('ETAT', 1)->get();
-        $serviceJson = $services->toJson();
-        return View('annonce.listeAnnonces', ['services' => $services, 'servicesJson' => $serviceJson]);
+        $services = Service::where('ETAT', 1);
+        //dd($services->links());
+        $serviceJson = $services->get()->toJson();
+        return View('annonce.listeAnnonces', ['services' => $services->paginate(3), 'servicesJson' => $serviceJson]);
+    }
+
+    public function suppression(int $IDSERVICE, int $IDUTILISATEUR){
+        if($IDUTILISATEUR == Auth::user()->IDUTILISATEUR){
+            $service = Service::where('IDSERVICE',$IDSERVICE)->where('IDUTILISATEUR',$IDUTILISATEUR);
+            $service->delete();
+            return redirect()->route('dashboard')->with('success', "L'annonce a bien été supprimée ! ");
+        }
+        else{
+            return redirect()->route('dashboard')->with('error', 'Vous ne pouvez pas supprimer cette annonce !');
+        }
+        
     }
 
     public function filtreDemande(Request $request)
     {
         $data = $request->only(['demande', 'typeService']);
-        $services = Service::where('ETAT', 1)->get();
+        $services = Service::where('ETAT', 1);
+        
         if ($data['demande'] !== "") {
-            $services = Service::where('estDemande', $data['demande'])->get();
+            $services = Service::where('estDemande', $data['demande']);
         }
         $nomType =  strtoupper($data['typeService']);
 
         if ($data['typeService'] !== "Tous les types sont sélectionnés" && $data['demande'] !== "Les deux sont sélectionnés") {
-            $services = Service::where('TYPE', $nomType)->where('estDemande', $data['demande'])->get();
+            $services = Service::where('TYPE', $nomType)->where('estDemande', $data['demande']);
         } else {
             if ($data['demande'] === "Les deux sont sélectionnés" && $data['typeService'] !== "Tous les types sont sélectionnés") {
                 if($nomType == "ECHANGES_COMPETENCES"){
-                    $services = Service::where('TYPE',$nomType)->get();
+                    $services = Service::where('TYPE',$nomType);
                 }
                 else{
-                    $services = Service::where('TYPE', $nomType)->get();
+                    $services = Service::where('TYPE', $nomType);
                 }
                 
             }
         }
-        $serviceJson = $services->toJson();
+    
+        $serviceJson = $services->get()->toJson();
 
-        return View('annonce.listeAnnonces', ['services' => $services, 'demande' => $data['demande'], 'servicesJson' => $serviceJson]);
+        return View('annonce.listeAnnonces', ['services' => $services->paginate(3), 'demande' => $data['demande'], 'servicesJson' => $serviceJson]);
     }
 
     public function detail(int $IDSERVICE, int $IDUTILISATEUR)
