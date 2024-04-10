@@ -53,6 +53,7 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/detail/{IDSERVICE}/{IDUTILISATEUR}',[ServicesController::class,'detail'])->name('service.detail');
     Route::post('/detail/{IDSERVICE}/{IDUTILISATEUR}',[ServicesController::class,'offre'])->name('service.offre');
+    Route::get('/accepter/{IDSERVICE}/{IDUTILISATEUR}',[ServicesController::class,'accepter'])->name('service.accepter');
 
     Route::get('/delete/{IDSERVICE}/{IDUTILISATEUR}',[ServicesController::class,'suppression'])->name('service.delete');
 

@@ -12,8 +12,13 @@
                     {{ __("You're logged in!") }}
                 </div>
             </div>
+            @if (session('error'))
+            <div class="bg-red-500 text-white p-4 rounded-lg mt-6 mb-6 text-center">
+                {{ session('error') }}
+            </div>
+            @endif
             @if (session('success'))
-            <div class="bg-green-500 text-white p-4 rounded-lg mt-6 mb-6 text-center">
+            <div class="bg-red-500 text-white p-4 rounded-lg mt-6 mb-6 text-center">
                 {{ session('success') }}
             </div>
             @endif
