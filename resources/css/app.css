@@ -16,25 +16,3 @@
   position: absolute;
   top: 60px;
 }
-
-.col-start-1 {
-  grid-column-start: 1
-}
-
-
-
-.col-start-6 {
-  grid-column-start: 6
-}
-
-
-
-.col-end-13 {
-  grid-column-end: 13
-}
-
-
-
-.col-end-8 {
-  grid-column-end: 8
-}
