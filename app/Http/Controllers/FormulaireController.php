@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Service;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\EchangeCompetence;
 use Illuminate\Support\Facades\Auth;
 
 class FormulaireController extends Controller
@@ -47,7 +48,7 @@ class FormulaireController extends Controller
             $service->ETAT = 1;
             $service->save();
                 
-            return redirect()->route('formulaire.portail');
+            return redirect()->route('formulaire.portail', [$service->IDSERVICE,$service->IDUTILISATEUR]);
         } else {
             // Gérer le cas où l'utilisateur n'est pas authentifié
             return redirect()->route('login')->with('error', 'Veuillez vous connecter pour effectuer cette action.');
@@ -58,11 +59,28 @@ class FormulaireController extends Controller
         $serviceAdd = Service::where('IDSERVICE',$IDSERVICE)->where('IDUTILISATEUR',$IDUTILISATEUR)->first();
         $lastService = Service::orderBy('IDSERVICE','desc')->first();
         if($serviceAdd == $lastService){
-
             return View('formulaire.formulaireEchangeCompetence',['service'=>$lastService]);
         }
         else{
             return redirect()->route('public.index');
+        }
+    }
+
+    public function storeCompetence(Request $request,int $IDSERVICE, int $IDUTILISATEUR){
+        if(Auth::check()){
+            $data = $request->only('nomCompetence');
+            $serviceAdd = Service::where('IDSERVICE',$IDSERVICE)->where('IDUTILISATEUR',$IDUTILISATEUR)->firstOrFail();
+            $serviceAdd->TYPE = "Echanges_competence";
+            $serviceAdd->update();
+
+            $echangeCompetence = new EchangeCompetence();
+            $echangeCompetence->COMPETENCE = $data['nomCompetence'];
+            $echangeCompetence->IDSERVICE = $IDSERVICE;
+            $echangeCompetence->IDUTILISATEUR = $IDUTILISATEUR;
+            $echangeCompetence->save();
+
+            return redirect()->route('service.detail', [$IDSERVICE,$IDUTILISATEUR]);
+
         }
     }
 
