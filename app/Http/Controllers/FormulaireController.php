@@ -4,8 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Service;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 use App\Models\EchangeCompetence;
+use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 
 class FormulaireController extends Controller
@@ -70,8 +71,22 @@ class FormulaireController extends Controller
         if(Auth::check()){
             $data = $request->only('nomCompetence');
             $serviceAdd = Service::where('IDSERVICE',$IDSERVICE)->where('IDUTILISATEUR',$IDUTILISATEUR)->firstOrFail();
-            $serviceAdd->TYPE = "Echanges_competence";
-            $serviceAdd->update();
+            DB::table('service')->where('IDSERVICE',$IDSERVICE)->where('IDUTILISATEUR',$IDUTILISATEUR)->delete();
+            $service = new Service();
+            $service->IDUTILISATEUR = $serviceAdd->IDUTILISATEUR;
+            $service->IDSERVICE = $serviceAdd->IDSERVICE;
+            $service->LIBELLE = $serviceAdd->LIBELLE;
+            $service->TYPE = 'Echanges_competences';
+            $service->DESCRIPTION = $serviceAdd->DESCRIPTION;
+            $service->COUT = $serviceAdd->COUT;
+            $service->NUMERO = $serviceAdd->NUMERO;
+            $service->RUE = $serviceAdd->RUE;
+            $service->CODEPOSTAL = $serviceAdd->CODEPOSTAL;
+            $service->VILLE = $serviceAdd->VILLE;
+            $service->ESTDEMANDE = $serviceAdd->ESTDEMANDE;
+            $service->DATEPOSTER = $serviceAdd->DATEPOSTER;
+            $service->ETAT = 1;
+            $service->save();
 
             $echangeCompetence = new EchangeCompetence();
             $echangeCompetence->COMPETENCE = $data['nomCompetence'];
